@@ -1,33 +1,32 @@
 ﻿using System;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InTheBag.Controllers
 {
-    public class AllAboutResults : Controller {
-
-        public ActionResult Index()
+    public class AllAboutResults : Controller
+    {
+        public IActionResult Index()
         {
             var weekday = DateTime.Now.DayOfWeek;
             var day = weekday.ToString();
             var time = DateTime.Now.Hour;
 
-            day = "Thursday";
-
             if (time <= 6)
             {
-                ViewBag.Greetin = "It's too early to be up!";
+                HttpContext.Session.SetString("greet", "It is too early to be up!");
             }
             else if (time <= 12)
             {
-                ViewBag.Greeting = "Good Morning";
+                HttpContext.Session.SetString("greet", "Good Morning");
             }
             else if (time <= 18)
             {
-                ViewBag.Greeting = "Good Afternoon";
+                HttpContext.Session.SetString("greet", "Good Afternoon");
             }
             else
             {
-                ViewBag.Greeting = "Good Evening";
+                HttpContext.Session.SetString("greet", "Good Evening");
             }
             int route = 0;
 
@@ -35,32 +34,32 @@ namespace InTheBag.Controllers
             {
                 case "Monday":
                 case "Tuesday":
-                    ViewData["dayMessage"] = "The work week just started! Stay focused, you have a lot to do this week!";
+                    HttpContext.Session.SetString("dayMsg", "The work week just started!  Stay focused, you have a lot to do this week!");
                     route = 1;
                     break;
                 case "Wednesday":
-                    ViewData["dayMessage"] = "Halfway to the weekend!";
+                    HttpContext.Session.SetString("dayMsg", "Halfway to the weekend!");
                     route = 2;
                     break;
                 case "Thursday":
-                    ViewData["dayMessage"] = "Isn't it Friday somewhere!";
+                    HttpContext.Session.SetString("dayMsg", "Isn't it Friday somewhere?");
                     route = 3;
                     break;
                 case "Friday":
-                    ViewData["dayMessage"] = "Woo hoo TGIF";
+                    HttpContext.Session.SetString("dayMsg", "Woo hoo TGIF");
                     route = 4;
                     break;
                 default:
-                    ViewData["dayMessage"] = "Ahhhh the weekend!";
+                    HttpContext.Session.SetString("dayMsg", "Ahhhh   the weekend!");
                     route = 5;
                     break;
             }
-
+            //route = 2;
             if (route == 1)
             {
                 return RedirectToAction("Weekday", "AllAboutResults");
             }
-            else if (route == 2 || route ==3)
+            else if (route == 2 || route == 3)
             {
                 return Redirect("https://lisabalbach.com/CIT218/Chapter8/HappyWednesday.html");
             }
@@ -68,15 +67,11 @@ namespace InTheBag.Controllers
             {
                 return View();
             }
-            
         }
-
         public IActionResult Weekday()
         {
-            ViewBag.Greeting = "Congratulations, the work week just started and you have been rerouted!";
+            HttpContext.Session.SetString("greet", "Congratulations, the work week just started and you have been rerouted!");
             return View();
         }
-
     }
-
 }
