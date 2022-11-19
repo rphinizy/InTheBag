@@ -22,6 +22,20 @@ namespace InTheBag.Controllers
                 return View("Novice");
         }
 
+        public IActionResult Perks()
+        {
+            ViewBag.Posted = false;
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Perks(string[] perk)
+        {
+            ViewBag.Posted = true;
+            //ViewBag.Perks = Request.Form["perk"];
+            ViewBag.Perks = perk;
+            return View();
+        }
+
         /*[HttpPost]
         public IActionResult Create(string GenieName, int Age, int WishesGranted)
         {
